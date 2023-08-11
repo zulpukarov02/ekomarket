@@ -1,45 +1,73 @@
+import 'package:ekomarket/theme/custom/app_colors.dart';
+import 'package:ekomarket/theme/custom/app_text.dart';
 import 'package:flutter/material.dart';
-// import 'package:url_launcher/url_launcher.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class InfoPage extends StatelessWidget {
   const InfoPage({Key? key}) : super(key: key);
 
-  // ... Your _launchURL function ...
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SafeArea(
+      body: SingleChildScrollView(
+        scrollDirection: Axis.vertical,
         child: Column(
           children: <Widget>[
             Image.asset(
               'assets/images/momo.png',
               semanticLabel: "info",
+              width: double.infinity,
+              height: 270,
+              fit: BoxFit.cover,
             ),
-            SizedBox(height: 20),
+
+            const Padding(
+              padding: EdgeInsets.only(left: 16, right: 18, top: 16),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(AppText.ekomarket,
+                      style:
+                          TextStyle(fontSize: 30, fontWeight: FontWeight.w700)),
+                  SizedBox(height: 10),
+                  Text(AppText.ekoinfotext,
+                      style: TextStyle(
+                          fontSize: 20,
+                          color: Color.fromARGB(255, 131, 126, 126))),
+                ],
+              ),
+            ),
+
+            const SizedBox(height: 20),
             // ... Your other widgets ...
 
-            ElevatedButton(
-              onPressed: () {
-                // Call the _launchURL function with the phone number
-                // _launchURL('tel:номер_телефона');
-              },
-              child: Text('Позвонить'),
-            ),
-            ElevatedButton(
-              onPressed: () {
-                // Open WhatsApp using the _launchURL function
-                // _launchURL('https://api.whatsapp.com/send?phone=номер_телефона');
-              },
-              child: Text('WhatsApp'),
-            ),
-            ElevatedButton(
-              onPressed: () {
-                // Open Instagram using the _launchURL function
-                // _launchURL('https://www.instagram.com/название_аккаунта/');
-              },
-              child: Text('Instagram'),
-            ),
+            CustomWidget(
+                text: "Позвонить",
+                onPressed: () {},
+                icon: const FaIcon(
+                  FontAwesomeIcons.phone,
+                  color: AppColors.ekomarket,
+                  size: 25,
+                )),
+            const SizedBox(height: 20),
+            CustomWidget(
+                text: "WhatsApp",
+                onPressed: () {},
+                icon: const FaIcon(
+                  FontAwesomeIcons.whatsapp,
+                  color: AppColors.ekomarket,
+                  size: 25,
+                )),
+            const SizedBox(height: 20),
+            CustomWidget(
+                text: "Instagram",
+                onPressed: () {},
+                icon: const FaIcon(
+                  FontAwesomeIcons.instagram,
+                  color: AppColors.ekomarket,
+                  size: 28,
+                )),
+            const SizedBox(height: 30)
           ],
         ),
       ),
@@ -47,82 +75,46 @@ class InfoPage extends StatelessWidget {
   }
 }
 
-// import 'package:flutter/material.dart';
-// import 'package:url_launcher/url_launcher.dart';
+class CustomWidget extends StatelessWidget {
+  const CustomWidget({
+    super.key,
+    required this.text,
+    this.onPressed,
+    required this.icon,
+  });
+  final String text;
+  final void Function()? onPressed;
+  final FaIcon icon;
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      height: 54,
+      width: 328,
+      child: ElevatedButton(
+        style: ButtonStyle(
+            backgroundColor: MaterialStateProperty.all(Colors.white),
+            shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(0)))),
+        onPressed: onPressed,
+        // Call the _launchURL function with the phone number
+        // _launchURL('tel:номер_телефона');
 
-// class InfoPage extends StatelessWidget {
-//   const InfoPage({super.key});
-
-//   // void _call() async {
-//   //   const phoneNumber = 'номер_телефона';
-//   //   if (await launch('tel:$phoneNumber')) {
-//   //     await launch('tel:$phoneNumber');
-//   //   } else {
-//   //     throw 'Не удалось вызвать номер $phoneNumber';
-//   //   }
-//   // }
-
-//   // void _openWhatsApp() async {
-//   //   const phoneNumber = 'номер_телефона';
-//   //   if (await canLaunch('https://api.whatsapp.com/send?phone=$phoneNumber')) {
-//   //     await launch('https://api.whatsapp.com/send?phone=$phoneNumber');
-//   //   } else {
-//   //     throw 'Не удалось открыть WhatsApp для номера $phoneNumber';
-//   //   }
-//   // }
-
-//   // void _openInstagram() async {
-//   //   const instagramAccount = 'название_аккаунта';
-//   //   if (await canLaunch('https://www.instagram.com/$instagramAccount/')) {
-//   //     await launch('https://www.instagram.com/$instagramAccount/');
-//   //   } else {
-//   //     throw 'Не удалось открыть Instagram для аккаунта $instagramAccount';
-//   //   }
-//   // }
-//   _launchURL(String url) async {
-//     if (await canLaunch(url)) {
-//       await launch(url);
-//     } else {
-//       throw 'Could not launch $url';
-//     }
-//   }
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       body: SafeArea(
-//         child: Column(
-//           children: <Widget>[
-//             Image.asset(
-//               'assets/images/momo.png',
-//               semanticLabel: "info",
-//             ),
-//             SizedBox(height: 20),
-//             // Positioned(
-//             //     width: 360,
-//             //     height: 44,
-//             //     top: 44,
-//             //     // right: 0,
-//             //     // bottom: 0,
-//             //     // left: 0,
-//             //     child: Text('info',
-//             //         style: TextStyle(fontSize: 20, color: Colors.amber))),
-//             SizedBox(height: 20),
-//             ElevatedButton(
-//               onPressed: () {},
-//               child: Text('Позвонить'),
-//             ),
-//             ElevatedButton(
-//               onPressed: () {},
-//               child: Text('WhatsApp'),
-//             ),
-//             ElevatedButton(
-//               onPressed: () {},
-//               child: Text('Instagram'),
-//             ),
-//           ],
-//         ),
-//       ),
-//     );
-//   }
-// }
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            icon,
+            const SizedBox(width: 13),
+            Text(
+              text,
+              style: const TextStyle(
+                color: AppColors.ekomarket,
+                fontSize: 17,
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
