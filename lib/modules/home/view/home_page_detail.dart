@@ -189,7 +189,7 @@ class _HomePageDetailState extends State<HomePageDetail> {
                                     },
                                   );
                                 },
-                                child: Text(
+                                child:  Text(
                                   "Добавить",
                                   style: TextStyle(
                                     color: Colors.white,
@@ -212,7 +212,7 @@ class _HomePageDetailState extends State<HomePageDetail> {
         onPressed: () {},
         style: ElevatedButton.styleFrom(
             fixedSize: Size(160, 60), primary: Colors.green),
-        child: Row(
+        child: const Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
             Icon(
@@ -308,18 +308,20 @@ class BottomSheetWidget extends StatelessWidget {
       children: [
         Expanded(
           child: ListView.builder(
-            padding: const EdgeInsets.all(8),
-            itemCount: 1,
+            padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 5),
+            itemCount: 8,
             itemBuilder: (context, index) {
-              return const Column(children: [
-                FructList(
-                  imege: 'assets/images/image .png',
-                  title: "Драконий фрукт",
-                  subtitle: "sub",
-                  trailing2: "trai",
-                  trailing: "trail",
-                )
-              ]);
+              return const Column(
+                children: [
+                  FructList(
+                    imege: 'assets/images/image .png',
+                    title: "Драконий фрукт",
+                    subtitle: "sub",
+                    trailing2: "trai",
+                    trailing: "trail",
+                  )
+                ],
+              );
             },
           ),
         ),
@@ -350,7 +352,7 @@ class FructList extends StatelessWidget {
       height: 150,
       width: 400,
       child: Card(
-        color: Colors.blueGrey,
+        // color: Color(0xff),
         margin: const EdgeInsets.symmetric(vertical: 15, horizontal: 3),
         shape: RoundedRectangleBorder(
           side: const BorderSide(color: Colors.white38, width: 1),
@@ -405,7 +407,7 @@ class FructList extends StatelessWidget {
                         style: ElevatedButton.styleFrom(
                           shape: CircleBorder(),
                           padding: EdgeInsets.all(10),
-                          backgroundColor: Colors.blue, // <-- Button color
+                          backgroundColor: Colors.green, // <-- Button color
                           foregroundColor: Colors.red, // <-- Splash color
                         ),
                       ),
@@ -416,7 +418,7 @@ class FructList extends StatelessWidget {
                         style: ElevatedButton.styleFrom(
                           shape: CircleBorder(),
                           padding: EdgeInsets.all(10),
-                          backgroundColor: Colors.blue, // <-- Button color
+                          backgroundColor: Colors.green, // <-- Button color
                           foregroundColor: Colors.red, // <-- Splash color
                         ),
                       )
