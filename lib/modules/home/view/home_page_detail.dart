@@ -189,7 +189,7 @@ class _HomePageDetailState extends State<HomePageDetail> {
                                     },
                                   );
                                 },
-                                child:  Text(
+                                child: Text(
                                   "Добавить",
                                   style: TextStyle(
                                     color: Colors.white,
@@ -443,5 +443,37 @@ class FructList extends StatelessWidget {
             ),
       ),
     );
+  }
+}
+// lsjdfjk
+
+// StadiumBorder/
+
+class KataOchurpTahta extends StatefulWidget {
+  const KataOchurpTahta({super.key});
+
+  @override
+  State<KataOchurpTahta> createState() => _KataOchurpTahtaState();
+}
+
+class _KataOchurpTahtaState extends State<KataOchurpTahta>
+    with SingleTickerProviderStateMixin {
+  late AnimationController _controller;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = AnimationController(vsync: this);
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return const Placeholder();
   }
 }
