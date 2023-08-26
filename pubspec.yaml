@@ -38,9 +38,11 @@ dependencies:
 
   # url_launcher: ^6.1.12
 
-  go_router: ^10.0.0
   font_awesome_flutter: ^10.5.0
   intl: ^0.18.1
+  go_router: ^10.1.0
+  cached_network_image: ^3.2.3
+  scrollable_list_tabview: ^0.2.0-nullsafety
 
 
 dev_dependencies:

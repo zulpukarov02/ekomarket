@@ -1,25 +1,10 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
+import 'package:ekomarket/models/models.dart';
+import 'package:ekomarket/modules/corzina/corzina.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 import 'package:ekomarket/theme/custom/app_colors.dart';
-
-class CartItem {
-  final String id;
-  final String title;
-  final double price;
-  int quantity;
-
-  // final String image;
-
-  CartItem({
-    required this.id,
-    required this.title,
-    required this.price,
-    required this.quantity,
-    // required this.image,
-  });
-}
 
 class CorzinaProductItem extends StatelessWidget {
   final CartItem cartItem;
@@ -44,7 +29,7 @@ class CorzinaProductItem extends StatelessWidget {
           height: 100,
           margin: const EdgeInsets.all(5.0),
           decoration: BoxDecoration(
-            color: AppColors.container,
+            color: AppColors.shop,
             borderRadius: BorderRadius.circular(12),
           ),
           child: Row(
@@ -57,7 +42,7 @@ class CorzinaProductItem extends StatelessWidget {
                     ClipRRect(
                       borderRadius: BorderRadius.circular(12.0),
                       child: Image.asset(
-                        'assets/images/momo.png',
+                        cartItem.imagePath,
                         // fit: BoxFit.cover,
                         width: 98, height: 86,
                       ),
@@ -87,67 +72,66 @@ class CorzinaProductItem extends StatelessWidget {
                 ),
               ),
               Expanded(
-                child: ListTile(
-                  title: Text(
-                    cartItem.title,
-                    textAlign: TextAlign.start,
-                    style: const TextStyle(
-                        fontSize: 12, fontWeight: FontWeight.w500),
-                  ),
-                  subtitle: Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Text(cartItem.id),
-                      Text(
-                        " ${cartItem.price.toStringAsFixed(0)}c ",
-                        style: const TextStyle(
-                            color: AppColors.maincolor,
-                            fontSize: 20,
-                            fontWeight: FontWeight.w500),
-                      ),
-                    ],
-                  ),
-                  trailing: Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: MaterialStateColor.resolveWith(
-                              (states) => AppColors.maincolor),
-                          shape: CircleBorder(),
-                          padding: EdgeInsets.all(4),
-                        ),
-                        onPressed: onDecrease,
-                        child: const Icon(
-                          Icons.remove,
-                          color: AppColors.shop, // Use your color here
-                        ),
-                      ),
-                      const SizedBox(width: 4),
-                      Text(cartItem.quantity.toString(),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  // mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    const SizedBox(height: 15),
+                    Text(
+                      cartItem.name,
+                      textAlign: TextAlign.start,
+                      style: const TextStyle(
+                          fontSize: 15, fontWeight: FontWeight.w500),
+                    ),
+                    Text(
+                      cartItem.id,
+                      style: TextStyle(fontSize: 13),
+                    ),
+                    Row(
+                      children: [
+                        Text(
+                          " ${cartItem.price.toStringAsFixed(0)}c ",
                           style: const TextStyle(
-                              color: AppColors.ekoblak,
-                              fontSize: 22,
-                              fontWeight: FontWeight.w500)),
-                      const SizedBox(width: 4),
-                      ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: MaterialStateColor.resolveWith(
-                            (states) => AppColors.maincolor,
+                              color: AppColors.maincolor,
+                              fontSize: 19,
+                              fontWeight: FontWeight.w500),
+                        ),
+                        Spacer(),
+                        ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: MaterialStateColor.resolveWith(
+                                (states) => AppColors.maincolor),
+                            shape: CircleBorder(),
+                            padding: EdgeInsets.all(2),
                           ),
-                          shape: CircleBorder(),
-                          padding: EdgeInsets.all(4),
+                          onPressed: onDecrease,
+                          child: const Icon(
+                            Icons.remove,
+                            color: AppColors.shop, // Use your color here
+                          ),
                         ),
-                        onPressed: onIncrease,
-                        child: const Icon(
-                          Icons.add,
-                          color: AppColors.shop,
+                        Text(cartItem.quantit.toStringAsFixed(0),
+                            style: const TextStyle(
+                                color: AppColors.ekoblak,
+                                fontSize: 20,
+                                fontWeight: FontWeight.w500)),
+                        ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: MaterialStateColor.resolveWith(
+                              (states) => AppColors.maincolor,
+                            ),
+                            shape: CircleBorder(),
+                            padding: EdgeInsets.all(2),
+                          ),
+                          onPressed: onIncrease,
+                          child: const Icon(
+                            Icons.add,
+                            color: AppColors.shop,
+                          ),
                         ),
-                      )
-                    ],
-                  ),
+                      ],
+                    ),
+                  ],
                 ),
               ),
             ],

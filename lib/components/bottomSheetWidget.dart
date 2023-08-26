@@ -1,6 +1,6 @@
 // ignore_for_file: file_names
 
-import 'package:ekomarket/components/fructlist.dart';
+import 'package:ekomarket/components/fruct_list_corzina.dart';
 import 'package:ekomarket/modules/history/history.dart';
 
 import 'package:ekomarket/theme/custom/app_colors.dart';
@@ -88,14 +88,14 @@ class BottomSheetWidget extends StatelessWidget {
             itemBuilder: (context, index) {
               return const Column(
                 children: [
-                  FructList(
+                  FructListBir(
                     imege: 'assets/images/apple.png',
                     title: 'Яблоко золотая радуга',
                     subtitle: 'Цена56 с за шт',
                     trailing: '56 с',
                     trailing2: '1 шт',
                   ),
-                  FructList(
+                  FructListBir(
                     imege: 'assets/images/dracon.png',
                     title: 'Драконий фрукт',
                     subtitle: 'Цена 340 с за шт',

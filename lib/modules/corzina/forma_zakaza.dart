@@ -1,4 +1,3 @@
-// ignore_for_file: library_private_types_in_public_api
 import 'package:ekomarket/modules/history/history.dart';
 import 'package:ekomarket/modules/home/view/home_page.dart';
 import 'package:ekomarket/theme/custom/app_colors.dart';
@@ -6,7 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 class FormaZakaza extends StatefulWidget {
-  const FormaZakaza({Key? key}) : super(key: key);
+  final double totalAmount;
+  const FormaZakaza({Key? key, required this.totalAmount}) : super(key: key);
 
   @override
   _FormaZakazaState createState() => _FormaZakazaState();
@@ -18,13 +18,7 @@ class _FormaZakazaState extends State<FormaZakaza> {
   TextEditingController landmarkController = TextEditingController();
   TextEditingController commentController = TextEditingController();
 
-  bool isFieldsFilled = false; // Flag to track if fields are filled
-
-  double calculateTotalAmount() {
-    // Add your logic here to calculate the total amount of the order
-    // You can use the entered data from controllers to perform calculations
-    return 0.0; // Replace this with your actual calculation
-  }
+  bool isFieldsFilled = false;
 
   Order? currentOrder;
   int index = 0;
@@ -34,12 +28,13 @@ class _FormaZakazaState extends State<FormaZakaza> {
       builder: (BuildContext context) {
         final order = orders[index];
 
+        // ignore: unused_local_variable
         final timeString = DateFormat('h:mm a').format(order.formattedDate);
 
         return AlertDialog(
           contentPadding: const EdgeInsets.all(15),
           title: Image.asset(
-            "assets/images/bag.png",
+            "assets/images/bag (1).png",
             width: 163,
             height: 200,
           ),
@@ -52,7 +47,7 @@ class _FormaZakazaState extends State<FormaZakaza> {
                 textAlign: TextAlign.center,
               ),
               Text(
-                  "Время: ${DateFormat('h:mm a').format(order.formattedDate)}"),
+                  "Дата и время ${DateFormat('dd.MM.yyyy HH:mm').format(order.formattedDate)}"),
             ],
           ),
           actions: [
@@ -60,9 +55,9 @@ class _FormaZakazaState extends State<FormaZakaza> {
               onPressed: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => const HomePage()),
-                ); // Close the dialog
-                Navigator.pop(context); // Close the FormaZakaza screen
+                  MaterialPageRoute(
+                      builder: (context) => const BottomNavigeshinbarWidget()),
+                );
               },
               style: ElevatedButton.styleFrom(
                 shape: RoundedRectangleBorder(
@@ -83,7 +78,21 @@ class _FormaZakazaState extends State<FormaZakaza> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Оформление заказа"),
+        backgroundColor: AppColors.shop,
+        title: const Text(
+          "Оформление заказа",
+          style: const TextStyle(
+              color: AppColors.ekoblak,
+              fontSize: 18,
+              fontWeight: FontWeight.w500),
+        ),
+        leading: IconButton(
+          onPressed: () {
+            Navigator.pop(context);
+          },
+          color: Colors.black,
+          icon: const Icon(Icons.arrow_back_ios_new),
+        ),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -142,17 +151,17 @@ class _FormaZakazaState extends State<FormaZakaza> {
             Spacer(flex: 25),
             Center(
               child: Text(
-                'Общая сумма заказа: ${calculateTotalAmount()} руб.', // Display the calculated total amount
+                'Сумма заказа ${(widget.totalAmount).toStringAsFixed(0)} c',
                 style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold),
               ),
             ),
-            Spacer(), // Add space to push the button to the bottom
+            Spacer(),
             ElevatedButton(
               onPressed: isFieldsFilled
                   ? () {
                       _showOrderConfirmationDialog();
                     }
-                  : null, // Disable the button if fields are not filled
+                  : null,
               style: ElevatedButton.styleFrom(
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(16),

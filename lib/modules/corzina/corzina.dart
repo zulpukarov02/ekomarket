@@ -1,16 +1,18 @@
+import 'package:ekomarket/models/models.dart';
 import 'package:ekomarket/modules/corzina/forma_zakaza.dart';
-import 'package:ekomarket/modules/corzina/corzina_productitem.dart';
 import 'package:ekomarket/theme/custom/app_colors.dart';
 import 'package:flutter/material.dart';
 
+import 'corzina_productitem.dart';
+
 class CartScreen extends StatefulWidget {
-  final List<CartItem> cartItems;
-  final double totalAmount;
+  // final List<CartItem> cartItems;
+  final double? totalAmount;
 
   const CartScreen({
     super.key,
-    required this.cartItems,
-    required this.totalAmount,
+    // required this.cartItems,
+    this.totalAmount,
   });
 
   @override
@@ -20,8 +22,8 @@ class CartScreen extends StatefulWidget {
 class _CartScreenState extends State<CartScreen> {
   double calculateSubtotal() {
     double subtotal = 0;
-    for (var cartItem in widget.cartItems) {
-      subtotal += cartItem.price * cartItem.quantity;
+    for (var cartItem in cartItems) {
+      subtotal += cartItem.price * cartItem.quantit;
     }
     return subtotal;
   }
@@ -36,7 +38,7 @@ class _CartScreenState extends State<CartScreen> {
 
   void removeFromCart(int index) {
     setState(() {
-      widget.cartItems.removeAt(index);
+      cartItems.removeAt(index);
     });
   }
 
@@ -78,6 +80,7 @@ class _CartScreenState extends State<CartScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Row(
+          mainAxisAlignment: MainAxisAlignment.start,
           children: [
             TextButton(
               child: const Text(
@@ -105,22 +108,22 @@ class _CartScreenState extends State<CartScreen> {
       body: Column(
         children: [
           Expanded(
-            flex: 2,
+            flex: 4,
             child: ListView.builder(
-              itemCount: widget.cartItems.length,
+              itemCount: cartItems.length,
               itemBuilder: (ctx, index) => CorzinaProductItem(
-                cartItem: widget.cartItems[index],
+                cartItem: cartItems[index],
                 onIncrease: () {
-                  if (widget.cartItems[index].quantity > 0) {
+                  if (cartItems[index].quantit > 0) {
                     setState(() {
-                      widget.cartItems[index].quantity++;
+                      cartItems[index].quantit++;
                     });
                   }
                 },
                 onDecrease: () {
-                  if (widget.cartItems[index].quantity > 0) {
+                  if (cartItems[index].quantit > 0) {
                     setState(() {
-                      widget.cartItems[index].quantity--;
+                      cartItems[index].quantit--;
                     });
                   }
                 },
@@ -133,7 +136,6 @@ class _CartScreenState extends State<CartScreen> {
           Padding(
             padding: const EdgeInsets.all(10),
             child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 Row(
                   children: [
@@ -147,7 +149,7 @@ class _CartScreenState extends State<CartScreen> {
                 Row(
                   children: [
                     const Text("Доставка"),
-                    const SizedBox(width: 222),
+                    const SizedBox(width: 210),
                     Text(' ${calculateDelivery().toStringAsFixed(0)} c',
                         style: const TextStyle(
                             fontSize: 20, fontWeight: FontWeight.bold)),
@@ -164,35 +166,36 @@ class _CartScreenState extends State<CartScreen> {
                     ),
                   ],
                 ),
-                SizedBox(
-                  child: ElevatedButton(
-                    onPressed: () {
-                      if (calculateTotal() < 300) {
-                        _showAlertDialog();
-                      } else {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => const FormaZakaza(),
-                          ),
-                        );
-                      }
-                    },
-                    style: ElevatedButton.styleFrom(
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(16),
-                      ),
-                      fixedSize: Size(328, 54),
-                      backgroundColor: AppColors.maincolor,
-                    ),
-                    child: const Text(
-                      'Оформить заказ',
-                      style:
-                          TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
-                    ),
-                  ),
-                ),
               ],
+            ),
+          ),
+          SizedBox(
+            child: ElevatedButton(
+              onPressed: () {
+                if (calculateTotal() < 300) {
+                  _showAlertDialog();
+                } else {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => FormaZakaza(
+                        totalAmount: calculateTotal(),
+                      ),
+                    ),
+                  );
+                }
+              },
+              style: ElevatedButton.styleFrom(
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(16),
+                ),
+                fixedSize: Size(328, 54),
+                backgroundColor: AppColors.maincolor,
+              ),
+              child: const Text(
+                'Оформить заказ',
+                style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
+              ),
             ),
           ),
         ],

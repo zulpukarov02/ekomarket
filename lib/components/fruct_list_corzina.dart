@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-class FructList extends StatelessWidget {
-  const FructList({
+class FructListBir extends StatelessWidget {
+  const FructListBir({
     super.key,
     required this.title,
     required this.subtitle,

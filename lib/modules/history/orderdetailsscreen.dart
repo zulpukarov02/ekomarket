@@ -1,4 +1,5 @@
 import 'package:ekomarket/components/bottomSheetWidget.dart';
+import 'package:ekomarket/modules/home/view/home_page.dart';
 import 'package:ekomarket/theme/custom/app_colors.dart';
 import 'package:flutter/material.dart';
 
@@ -18,7 +19,7 @@ class OrderDetailsScreen extends StatelessWidget {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => const History(),
+                  builder: (context) => const BottomNavigeshinbarWidget(),
                 ),
               );
             },

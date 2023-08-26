@@ -1,29 +1,33 @@
+import 'package:ekomarket/components/custom_container.dart';
+import 'package:ekomarket/components/serchwidget.dart';
+import 'package:ekomarket/models/models.dart';
+import 'package:ekomarket/theme/custom/app_colors.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:scrollable_list_tabview/scrollable_list_tabview.dart';
 
 class HomePageDetail extends StatefulWidget {
-  const HomePageDetail({Key? key}) : super(key: key);
-
+  const HomePageDetail({
+    Key? key,
+    // required this.nametext,
+  }) : super(key: key);
+  // final String nametext;
   @override
-  State<HomePageDetail> createState() => _HomePageDetailState();
+  // ignore: library_private_types_in_public_api
+  _MyHomePageState createState() => _MyHomePageState();
 }
 
-class _HomePageDetailState extends State<HomePageDetail> {
+class _MyHomePageState extends State<HomePageDetail> {
   TextEditingController editingController = TextEditingController();
+  List<CartItem> displayList = List.from(cartItems);
 
-  final duplicateItems = List<String>.generate(10000, (i) => "Item $i");
-  var items = <String>[];
-
-  @override
-  void initState() {
-    items = duplicateItems;
-    super.initState();
-  }
-
-  void filterSearchResults(String query) {
+  void upDateList(String value) {
     setState(() {
-      items = duplicateItems
-          .where((item) => item.toLowerCase().contains(query.toLowerCase()))
+      displayList = cartItems
+          .where((element) =>
+              element.name.toLowerCase().contains(value.toLowerCase()))
           .toList();
+      print('displayList: $displayList');
     });
   }
 
@@ -31,192 +35,239 @@ class _HomePageDetailState extends State<HomePageDetail> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-          leading: Icon(Icons.arrow_back_ios_new_sharp),
+          elevation: 0,
+          backgroundColor: AppColors.appBar,
+          leading: IconButton(
+              onPressed: () => Navigator.pop(context),
+              icon: Icon(
+                Icons.arrow_back_ios_new_sharp,
+                color: AppColors.ekoblak,
+              )),
           centerTitle: true,
-          title: Text("Продукты")),
+          title: Text(
+            "Продукты",
+            style: TextStyle(color: AppColors.appBartext),
+          )),
       body: Column(
-        children: <Widget>[
-          // Padding(
-          //   padding: const EdgeInsets.symmetric(horizontal: 10),
-          //   child: Row(
-          //     children: [
-          //       Padding(
-          //         padding: const EdgeInsets.all(8.0),
-          //         child: SizedBox(
-          //           width: 280,
-          //           height: 50,
-          //           child: TextField(
-          //             onChanged: (value) {
-          //               filterSearchResults(value);
-          //             },
-          //             controller: editingController,
-          //             decoration: InputDecoration(
-          //                 labelText: "Search",
-          //                 hintText: "Search",
-          //                 prefixIcon: Icon(Icons.search),
-          //                 border: OutlineInputBorder(
-          //                     borderRadius:
-          //                         BorderRadius.all(Radius.circular(25.0)))),
-          //           ),
-          //         ),
-          //       ),
-          //       Spacer(),
-          //       Text(
-          //         'Отмена',
-          //         style: TextStyle(fontSize: 20, color: Colors.black),
-          //       )
-          //     ],
-          //   ),
-          // ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: TextField(
-              onChanged: (value) {
-                filterSearchResults(value);
-              },
-              controller: editingController,
-              decoration: InputDecoration(
-                  labelText: "Search",
-                  hintText: "Search",
-                  prefixIcon: Icon(Icons.search),
-                  border: OutlineInputBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(25.0)))),
-            ),
+        children: [
+          SearchWidjet(
+            editingController: editingController,
+            onChanged: (value) {
+              upDateList(value);
+            },
           ),
-          TabBarView(),
-          // Expanded(
-          //   child: ListView.builder(
-          //     shrinkWrap: true,
-          //     itemCount: items.length,
-          //     itemBuilder: (context, index) {
-          //       return ListTile(
-          //         title: Text('${items[index]}'),
-          //       );
-          //     },
-          //   ),
-          // ),
-
+          // SizedBox(height: 20),
           Expanded(
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: GridView.builder(
-                  gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
-                      maxCrossAxisExtent: 200,
-                      childAspectRatio: 3 / 4.3,
-                      crossAxisSpacing: 10,
-                      mainAxisSpacing: 15),
-                  itemCount: 8,
-                  itemBuilder: (BuildContext ctx, index) {
-                    return Container(
-                      alignment: Alignment.center,
-                      decoration: BoxDecoration(
-                          color: Colors.black12,
-                          borderRadius: BorderRadius.circular(15)),
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            ClipRRect(
-                              borderRadius: BorderRadius.circular(15.0),
-                              child: Image.asset(
-                                'assets/images/momo.png',
-                                fit: BoxFit.cover,
-                                width: double.infinity,
-                              ),
-                            ),
-                            Text(
-                              'Морковь Нантская',
-                              style:
-                                  TextStyle(color: Colors.black, fontSize: 16),
-                            ),
-                            Spacer(),
-                            Text(
-                              '45c',
-                              style:
-                                  TextStyle(color: Colors.black, fontSize: 16),
-                            ),
-                            SizedBox(
-                              width: double.infinity,
-                              child: ElevatedButton(
-                                onPressed: () {
-                                  showModalBottomSheet(
-                                    context: context,
-                                    elevation: 0,
-                                    useRootNavigator: true,
-                                    isScrollControlled: true,
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(15.0),
-                                    ),
-                                    builder: (BuildContext context) {
-                                      return Container(
-                                        padding: EdgeInsets.all(10),
-                                        // margin: EdgeInsetsDirectional.all(10),
-                                        width: double.maxFinite,
-                                        height: 570,
-                                        child: BottomSheetWidget(
-                                          // order: order,
-                                          divider: Divider(
-                                            thickness: 4,
-                                            height: 4,
-                                            indent: 160,
-                                            endIndent: 160,
-                                          ),
-                                          textApp: "rrrrr",
-                                          textStyle: const TextStyle(
-                                              color: Colors.red,
-                                              fontSize: 22,
-                                              fontWeight: FontWeight.w500),
-                                          sizedBox: SizedBox(
-                                            child: ElevatedButton(
-                                              onPressed: () {},
-                                              style: ButtonStyle(
-                                                backgroundColor:
-                                                    MaterialStateColor
-                                                        .resolveWith((states) =>
-                                                            Colors.green),
-                                              ),
-                                              child: Text('Оформить заказ',
-                                                  style: TextStyle(
-                                                    color: Colors.white,
-                                                    fontSize: 18,
-                                                  )),
-                                            ),
-                                          ),
-                                        ),
-                                      );
-                                    },
-                                  );
-                                },
-                                child: Text(
-                                  "Добавить",
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                  ),
-                                ),
-                                style: ElevatedButton.styleFrom(
-                                    primary: Colors.green),
-                              ),
-                            )
-                          ],
+            flex: 2,
+            child: displayList.isEmpty
+                ? Center(
+                    child: Column(
+                    children: [
+                      Image.asset("assets/images/notFount.png"),
+                      Text(
+                        "Ничего не нашли",
+                        style: TextStyle(
+                            color: AppColors.ekoblak,
+                            fontWeight: FontWeight.w600,
+                            fontSize: 17.6),
+                      )
+                    ],
+                  ))
+                : ScrollableListTabView(
+                    tabHeight: 48,
+                    bodyAnimationDuration: const Duration(milliseconds: 150),
+                    tabAnimationCurve: Curves.easeOut,
+                    tabAnimationDuration: const Duration(milliseconds: 2),
+                    tabs: [
+                      ScrollableListTab(
+                        tab: const ListTab(
+                          label: Text('Все'),
+                          showIconOnList: true,
+                          activeBackgroundColor: AppColors.maincolor,
+                          borderRadius: BorderRadius.all(
+                            Radius.circular(15),
+                          ),
+                        ),
+                        body: GridView.builder(
+                          shrinkWrap: true,
+                          gridDelegate:
+                              SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: 2,
+                            childAspectRatio:
+                                MediaQuery.of(context).size.width /
+                                    (MediaQuery.of(context).size.height / 1.6),
+                          ),
+                          physics: const NeverScrollableScrollPhysics(),
+                          itemCount: 10,
+                          itemBuilder: (_, index) {
+                            if (index < displayList.length) {
+                              return CustomContainer(
+                                productTitle: displayList[index].name,
+                                searchValue: editingController.text,
+                                productImage: displayList[index].imagePath,
+                              );
+                            } else {
+                              return SizedBox
+                                  .shrink(); // Возвращаем пустой виджет, если индекс недопустим
+                            }
+                          },
                         ),
                       ),
-                    );
-                  }),
-            ),
+                      ScrollableListTab(
+                        tab: const ListTab(
+                          label: Text('Фрукты'),
+                          showIconOnList: true,
+                          activeBackgroundColor: AppColors.maincolor,
+                          borderRadius: BorderRadius.all(
+                            Radius.circular(15),
+                          ),
+                        ),
+                        body: GridView.builder(
+                          shrinkWrap: true,
+                          gridDelegate:
+                              SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: 2,
+                            childAspectRatio:
+                                MediaQuery.of(context).size.width /
+                                    (MediaQuery.of(context).size.height / 1.6),
+                          ),
+                          physics: NeverScrollableScrollPhysics(),
+                          itemCount: 10,
+                          itemBuilder: (_, index) {
+                            if (index < displayList.length) {
+                              return CustomContainer(
+                                productTitle: displayList[index].name,
+                                searchValue: editingController.text,
+                                productImage: displayList[index].imagePath,
+                              );
+                            } else {
+                              return SizedBox
+                                  .shrink(); // Возвращаем пустой виджет, если индекс недопустим
+                            }
+                          },
+                        ),
+                      ),
+                      ScrollableListTab(
+                        tab: const ListTab(
+                          label: Text('Сухофрукты'),
+                          showIconOnList: true,
+                          activeBackgroundColor: AppColors.maincolor,
+                          borderRadius: BorderRadius.all(
+                            Radius.circular(15),
+                          ),
+                        ),
+                        body: GridView.builder(
+                          shrinkWrap: true,
+                          gridDelegate:
+                              SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: 2,
+                            childAspectRatio:
+                                MediaQuery.of(context).size.width /
+                                    (MediaQuery.of(context).size.height / 1.6),
+                          ),
+                          physics: NeverScrollableScrollPhysics(),
+                          itemCount: 10,
+                          itemBuilder: (_, index) {
+                            if (index < displayList.length) {
+                              return CustomContainer(
+                                productTitle: displayList[index].name,
+                                searchValue: editingController.text,
+                                productImage: displayList[index].imagePath,
+                              );
+                            } else {
+                              return SizedBox
+                                  .shrink(); // Возвращаем пустой виджет, если индекс недопустим
+                            }
+                          },
+                        ),
+                      ),
+                      ScrollableListTab(
+                        tab: ListTab(
+                          label: Text('Овощи'),
+                          showIconOnList: true,
+                          activeBackgroundColor: AppColors.maincolor,
+                          borderRadius: BorderRadius.all(
+                            Radius.circular(15),
+                          ),
+                        ),
+                        body: GridView.builder(
+                          shrinkWrap: true,
+                          gridDelegate:
+                              SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: 2,
+                            childAspectRatio:
+                                MediaQuery.of(context).size.width /
+                                    (MediaQuery.of(context).size.height / 1.6),
+                          ),
+                          physics: NeverScrollableScrollPhysics(),
+                          itemCount: 10,
+                          itemBuilder: (_, index) {
+                            if (index < displayList.length) {
+                              return CustomContainer(
+                                productTitle: displayList[index].name,
+                                searchValue: editingController.text,
+                                productImage: displayList[index].imagePath,
+                              );
+                            } else {
+                              return SizedBox
+                                  .shrink(); // Возвращаем пустой виджет, если индекс недопустим
+                            }
+                          },
+                        ),
+                      ),
+                      ScrollableListTab(
+                        tab: ListTab(
+                          label: Text('Овощи'),
+                          showIconOnList: true,
+                          activeBackgroundColor: AppColors.maincolor,
+                          borderRadius: BorderRadius.all(
+                            Radius.circular(15),
+                          ),
+                        ),
+                        body: GridView.builder(
+                          shrinkWrap: true,
+                          gridDelegate:
+                              SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: 2,
+                            childAspectRatio:
+                                MediaQuery.of(context).size.width /
+                                    (MediaQuery.of(context).size.height / 1.6),
+                          ),
+                          physics: NeverScrollableScrollPhysics(),
+                          itemCount: 10,
+                          itemBuilder: (_, index) {
+                            if (index < displayList.length) {
+                              return CustomContainer(
+                                productTitle: displayList[index].name,
+                                searchValue: editingController.text,
+                                productImage: displayList[index].imagePath,
+                              );
+                            } else {
+                              return SizedBox
+                                  .shrink(); // Возвращаем пустой виджет, если индекс недопустим
+                            }
+                          },
+                        ),
+                      ),
+                    ],
+                  ),
           ),
         ],
       ),
       floatingActionButton: ElevatedButton(
         onPressed: () {},
         style: ElevatedButton.styleFrom(
-            fixedSize: Size(160, 60), primary: Colors.green),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(30),
+          ),
+          fixedSize: Size(160, 48),
+          backgroundColor: AppColors.maincolor,
+        ),
         child: const Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
-            Icon(
-              Icons.add,
+            FaIcon(
+              FontAwesomeIcons.bagShopping,
               color: Colors.white,
             ),
             Text(
@@ -229,251 +280,5 @@ class _HomePageDetailState extends State<HomePageDetail> {
         ),
       ),
     );
-  }
-}
-
-class OrderDetailsScreen {}
-
-class TabBarView extends StatelessWidget {
-  const TabBarView({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return DefaultTabController(
-      length: 3,
-      child: TabBar(
-          unselectedLabelColor: Colors.black45,
-          indicatorSize: TabBarIndicatorSize.label,
-          indicator: BoxDecoration(
-              borderRadius: BorderRadius.circular(50), color: Colors.green),
-          tabs: [
-            Tab(
-              child: Container(
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(50),
-                    border: Border.all(color: Colors.black45, width: 1)),
-                child: Align(
-                  alignment: Alignment.center,
-                  child: Text("Все"),
-                ),
-              ),
-            ),
-            Tab(
-              child: Container(
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(50),
-                    border: Border.all(color: Colors.black45, width: 1)),
-                child: Align(
-                  alignment: Alignment.center,
-                  child: Text("Фрукты"),
-                ),
-              ),
-            ),
-            Tab(
-              child: Container(
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(50),
-                    border: Border.all(color: Colors.black45, width: 1)),
-                child: Align(
-                  alignment: Alignment.center,
-                  child: Text("Сухофрукты"),
-                ),
-              ),
-            ),
-          ]),
-    );
-  }
-}
-
-class BottomSheetWidget extends StatelessWidget {
-  const BottomSheetWidget({
-    super.key,
-    // required this.order,
-    this.divider,
-    this.textApp,
-    this.textStyle,
-    this.sizedBox,
-  });
-
-  // final Order? order;
-  final Divider? divider;
-
-  final String? textApp;
-  final TextStyle? textStyle;
-  final SizedBox? sizedBox;
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Expanded(
-          child: ListView.builder(
-            padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 5),
-            itemCount: 8,
-            itemBuilder: (context, index) {
-              return const Column(
-                children: [
-                  FructList(
-                    imege: 'assets/images/image .png',
-                    title: "Драконий фрукт",
-                    subtitle: "sub",
-                    trailing2: "trai",
-                    trailing: "trail",
-                  )
-                ],
-              );
-            },
-          ),
-        ),
-        SizedBox(width: 328, height: 54, child: sizedBox),
-      ],
-    );
-  }
-}
-
-class FructList extends StatelessWidget {
-  const FructList({
-    super.key,
-    required this.title,
-    required this.subtitle,
-    required this.trailing,
-    required this.imege,
-    required this.trailing2,
-  });
-  final String title;
-  final String subtitle;
-  final String trailing;
-  final String trailing2;
-  final String imege;
-
-  @override
-  Widget build(BuildContext context) {
-    return SizedBox(
-      height: 150,
-      width: 400,
-      child: Card(
-        // color: Color(0xff),
-        margin: const EdgeInsets.symmetric(vertical: 15, horizontal: 3),
-        shape: RoundedRectangleBorder(
-          side: const BorderSide(color: Colors.white38, width: 1),
-          borderRadius: BorderRadius.circular(12),
-        ),
-        elevation: 1,
-        child: Center(
-            child: Row(
-          children: [
-            Expanded(
-              child: Padding(
-                padding: const EdgeInsets.symmetric(vertical: 7, horizontal: 7),
-                child: Stack(alignment: Alignment.bottomLeft, children: [
-                  ClipRRect(
-                    borderRadius: BorderRadius.circular(12.0),
-                    child: Image.asset(
-                      'assets/images/momo.png',
-                      // fit: BoxFit.cover,
-                      // width: 100,
-                    ),
-                  ),
-                  SizedBox(
-                    height: 40,
-                    width: 40,
-                    child: Card(
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(7)),
-                        color: Colors.white,
-                        child: const Icon(
-                          Icons.delete,
-                          color: Colors.red,
-                        )),
-                  ),
-                ]),
-              ),
-            ),
-            Expanded(
-              child: Column(
-                // mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text("Драконий фрукт"),
-                  Text("Драконий фрукт"),
-                  Spacer(),
-                  Row(
-                    children: [
-                      Text("680"),
-                      Spacer(),
-                      ElevatedButton(
-                        onPressed: () {},
-                        child: Icon(Icons.add, color: Colors.white),
-                        style: ElevatedButton.styleFrom(
-                          shape: CircleBorder(),
-                          padding: EdgeInsets.all(10),
-                          backgroundColor: Colors.green, // <-- Button color
-                          foregroundColor: Colors.red, // <-- Splash color
-                        ),
-                      ),
-                      Text("2"),
-                      ElevatedButton(
-                        onPressed: () {},
-                        child: Icon(Icons.add, color: Colors.white),
-                        style: ElevatedButton.styleFrom(
-                          shape: CircleBorder(),
-                          padding: EdgeInsets.all(10),
-                          backgroundColor: Colors.green, // <-- Button color
-                          foregroundColor: Colors.red, // <-- Splash color
-                        ),
-                      )
-                    ],
-                  ),
-                ],
-              ),
-            )
-          ],
-        )
-
-            // ListTile(
-            //     leading: Image.asset(
-            //       imege,
-            //       // width: 100,
-            //     ),
-            //     title: Text(title),
-            //     subtitle: Text(subtitle),
-            //     trailing: Column(
-            //       children: [Text(trailing), Text(trailing2)],
-            //     )),
-            ),
-      ),
-    );
-  }
-}
-// lsjdfjk
-
-// StadiumBorder/
-
-class KataOchurpTahta extends StatefulWidget {
-  const KataOchurpTahta({super.key});
-
-  @override
-  State<KataOchurpTahta> createState() => _KataOchurpTahtaState();
-}
-
-class _KataOchurpTahtaState extends State<KataOchurpTahta>
-    with SingleTickerProviderStateMixin {
-  late AnimationController _controller;
-
-  @override
-  void initState() {
-    super.initState();
-    _controller = AnimationController(vsync: this);
-  }
-
-  @override
-  void dispose() {
-    _controller.dispose();
-    super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return const Placeholder();
   }
 }
